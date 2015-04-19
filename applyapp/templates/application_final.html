@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% set name = "Step 6: Finalize application" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block inner_content %}
+  <p>Once you click "Submit", your application will be submitted and <b>cannot be modified further</b>.</p>
+  <div class="recap">
+    <h2>Recap</h2>
+    {{ recap|safe }}
+  </div>
+  
+  <h2>Affirmations</h2>
+  {{ wtf.quick_form(form, method="POST", button_map={"submit":"danger", "prev":"primary"}) }}
+  <p><small>*Upon submitting, your application cannot be modified further.</small></p>
+{% endblock %}

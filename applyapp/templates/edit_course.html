@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% set name = "Creating new course" if is_new else "Editing course" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "courses" -%}
+
+{% block inner_content %}
+  {{ wtf.quick_form(form, method="POST", button_map={"submit":"primary"}) }}
+{% endblock %}
+
+{% block other_scripts %}
+{{super()}}
+{{ pagedown.include_pagedown() }}
+<script src="{{url_for('.static', filename='lib/jquery.elastic.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+<p>
+  Greetings, {{ application.submitter.name }}! Good news&mdash;your AP application for the 2015-16 school year has been reviewed. You have been approved for the following courses:
+
+  <ul>
+    {% if approved_apps|length == 0 %}
+      <li>No approved courses.</li>
+    {% endif %}
+    {% for course_app in approved_apps %}
+      <li>{{ course_app.course.name }}</li>
+    {% endfor %}
+  </ul>
+
+</p>
+
+<p>When you submit your course request form for the 2015-16 school year later this month, you may select any of the courses listed above. Thanks!</p>
+
+<p style="color: gray; font-size: 0.9em;">Sent by the WSHS AP Applications Automailer. Replies to this email address are not monitored. Please contact a school administrator if you have any questions.</p>

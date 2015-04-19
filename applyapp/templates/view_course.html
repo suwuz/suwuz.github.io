@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% set name = course.name -%}
+{% set active_page = "courses" -%}
+
+{% block inner_content %}
+  <div class="info">
+    <h3>Description</h3>
+    <p>{{ course.description|markdown }}</p>
+    <h3>Application requirements</h3>
+    <p>
+    {% if course.requirements %}
+      {{ course.requirements|markdown }}
+    {% else %}
+      No special requirements.
+    {% endif %}  
+    </p>
+  </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% set name = "Creating new teacher" if is_new else "Editing teacher" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "teachers" -%}
+
+{% block inner_content %}
+  {{ wtf.quick_form(form, method="POST", button_map={"submit":"primary"}) }}
+{% endblock %}

@@ -1,0 +1,12 @@
+<p>Greetings, {{ application.submitter.name }}! You've already completed the first step of your White Station High School Advanced Placement Application for the 2015-16 school year.</p>
+
+<p>Continue your application at your leisure through the <a href="{{ url_for('dashboard', _external=True) }}">WSHS AP Applications web interface</a>. Just be sure you submit it by the deadline, <b>{{ due_date }}</b>!</p>
+
+<div style="margin-left: 10px;">
+  Username: {{ application.submitter.email }}<br>
+  Password: <i>[hidden]</i>
+</div>
+
+<p>Thanks! We're looking forward to receiving your completed application soon.</p>
+
+<p style="color: gray; font-size: 0.9em;">Sent by the WSHS AP Applications Automailer. Replies to this email address are not monitored. Please contact your counsellor if you have any questions.</p>

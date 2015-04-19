@@ -1,0 +1,4 @@
+CMDS.md
+venv
+*.pyc
+.env

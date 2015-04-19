@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% set active_page = "login" -%}
+{% set name = "Login" -%}
+{% set wrapper_class = "narrow" %}
+
+{% from "bootstrap/wtf.html" import quick_form %}
+
+{% block inner_content %}
+  <p>Have you already begun your application and are returning to continue it? If so, you're in the right place. If you haven't yet begun an application, you should <a href="{{ url_for('new_application') }}">do that first</a>.
+  {{ quick_form(login_user_form, action=url_for_security('login'), method="POST", button_map={"submit":"primary"}) }}
+  <div class="pull-right"><a href="{{ url_for_security('forgot_password') }}">Forgot password?</a></div>
+{% endblock %}

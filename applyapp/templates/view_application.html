@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% set name = name + ' – ' + date -%}
+{% set active_page = 'applications' -%}
+
+{% block inner_content %}
+{{ formatted|safe }}
+{% endblock %}

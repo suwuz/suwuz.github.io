@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% set active_page = "new_application" -%}
+{% set name = "Step 3: Courses" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block inner_content %}
+  <p>Please specify your desired courses for the coming year. You can click on the "show details" link next to any course to view a description as well as application requirements.</p>
+  <form class="form" method="post" role="form">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_errors(form, hiddens="only") }}
+
+  {{ wtf.form_field(form.desired_courses) }}
+
+  {{ wtf.form_field(form.prev, button_map={"prev":"primary"}) }}
+  {{ wtf.form_field(form.save) }}
+  {{ wtf.form_field(form.submit, button_map={"submit":"primary"}) }}
+</form>
+{% endblock %}

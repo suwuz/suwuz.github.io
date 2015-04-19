@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% set name = "Step 4: Course details" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block other_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js"></script>
+<script>
+PREV_UPLOADS = {{ prev_uploads|safe }};
+</script>
+{{super()}}
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css">
+{% endblock %}
+
+{% block inner_content %}
+  <h3>{{ course.name }}</h3>
+  <h4>Description</h4>
+  <p>{{ course.description|markdown }}</p>
+  <h4>Application requirements</h4>
+  <p>
+  {% if course.requirements %}
+    {{ course.requirements|markdown }}
+  {% else %}
+    No special requirements.
+  {% endif %}
+  </p>
+  <form class="form" method="post" role="form">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_errors(form, hiddens="only") }}
+
+  <h4>Prequisites</h4>
+  {{ wtf.form_field(form.average_okay) }}
+  {{ wtf.form_field(form.have_met_reqs) }}
+
+  {% if course.upload_required %}
+    <h4>Uploads</h4>
+    <p>Writing sample(s) and/or other supplementary materials are <b>required for this course</b>. Please attach them here. <i>(Accepted types: .doc, .docx)</i></p>
+    <div id="fileUploadDropzone" class="dropzone"></div>
+  {% endif %}
+
+  {{ wtf.form_field(form.prev, button_map={"prev":"primary"}) }}
+  {{ wtf.form_field(form.save) }}
+  {{ wtf.form_field(form.submit, button_map={"submit":"primary"}) }}
+</form>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% set name = "Step 5: Teacher recommendations" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block inner_content %}
+  {% if is_first_year_at_wshs %}
+    <p>As a first-year White Station High School student, it will be necessary for you to download and print multiple copies of the <a href="{{ url_for('static', filename='recommendation.pdf') }}">AP course recommendation form</a> and request that <i>at least 2 of your current teachers</i> complete a recommendation. Once this has been completed, the copies must be returned to White Station High School (instructions are included at the bottom of the form).</p>
+  {% else %}
+    <p>A major component of your AP course application is teacher recommendations. Using the box below, select <b>at least two teachers</b> (in subject areas relevant to your desired courses, if applicable) whom you have personally asked to provide a recommendation for you. Once you submit your application, these teachers will receive a digital recommendation link through which they will be asked a series of questions about you as a student. <i>Again, although the recommendation takes place online, it is still imperative that you make direct contact with the teacher before submitting your application in order to ensure that they wish to provide a recommendation.</i></p>
+  {% endif %}
+
+  <form class="form" method="post" role="form">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_errors(form, hiddens="only") }}
+
+
+  {% if is_first_year_at_wshs %}
+    {{ wtf.form_field(form.understand) }}
+  {% else %}
+    {{ wtf.form_field(form.teacher_recs) }}
+    <div id="confirm_contacted_container">
+      {{ wtf.form_field(form.confirm_contacted) }}
+    </div>
+    <div id="confirms"></div>
+  {% endif %}
+
+  {{ wtf.form_field(form.prev, button_map={"prev":"primary"}) }}
+  {{ wtf.form_field(form.save) }}
+  {{ wtf.form_field(form.submit, button_map={"submit":"primary"}) }}
+</form>
+
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css">
+{% endblock %}
+
+{% block other_scripts %}
+{{super()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js"></script>
+{% endblock %}

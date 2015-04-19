@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% set name = "Applications for " + course.name -%}
+{% set active_page = "courses" -%}
+
+{% block inner_content %}
+  {% if course.upload_required %}
+    <p><a class="btn btn-success" href="{{ url_for('download_combined_uploaded_files', course_id=course.id) }}">Download all writing samples (.zip)</a> <a class="btn btn-primary" href="{{ url_for('review_uploaded_files', course_id=course.id) }}">Review writing samples</a></p>
+  {% endif %}
+  <table class="table table-striped table-bordered sortable">
+    <thead>
+      <tr>
+        <th data-defaultsort="asc">Student</th>
+        <th>Met reqs</th>
+        <th>B+ in prereq</th>
+        {% if course.upload_required %}
+          <th>Writing sample review</th>
+          <th>Writing samples</th>
+        {% endif %}
+        <th>Status</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for application, course_app in applications %}
+      <tr>
+        <td>{{ application.submitter.name }}</td>
+        <td>{% if course_app.have_met_reqs %}<span class="glyphicon glyphicon-ok-circle"></span> Yes{% else %}<span class="glyphicon glyphicon-remove-circle"></span> No{% endif %}</td>
+        <td>{% if course_app.average_okay %}<span class="glyphicon glyphicon-ok-circle"></span> Yes{% else %}<span class="glyphicon glyphicon-remove-circle"></span> No{% endif %}</td>
+        {% if course.upload_required %}
+          <td>{% if course_app.writing_sample_status == 'yes' %}<span class="glyphicon glyphicon-thumbs-up"></span> Yes {% elif course_app.writing_sample_status == 'no' %}<span class="glyphicon glyphicon-thumbs-down"></span> No{% elif course_app.writing_sample_status == 'maybe' %}<span class="glyphicon glyphicon-thumbs-up withreservations"></span> Maybe{% elif course_app.writing_sample_status == 'pending' %}<span class="glyphicon glyphicon-unchecked"></span> Not yet reviewed{% endif %}</td>
+          <td>{% if course_app.uploaded_content|length == 0 %}<span class="glyphicon glyphicon-remove-circle"></span> None{% endif %}{% for f in course_app.uploaded_content %}<span class="glyphicon glyphicon-ok-circle"></span> <a href="{{ url_for('download_file', file=f._id) }}">{{ f.name }}</a> {% endfor %}</td>
+        {% endif %}
+        {% set status = course_app.status %}
+        <td>{% include '_review_app_item.html' %}</td>
+        <td><a class="btn btn-primary" href="{{ url_for('review_application', application_id=application.id) }}">Review application</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='lib/bootstrap-sortable.css')}}">
+{% endblock %}
+
+{% block other_scripts %}
+{{super()}}
+<script src="{{url_for('.static', filename='lib/bootstrap-sortable.js')}}"></script>
+{% endblock %}

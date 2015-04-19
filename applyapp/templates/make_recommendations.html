@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% set name = "Recommendations from " + teacher.name -%}
+{% set active_page = "recommendations" -%}
+
+{% block inner_content %}
+  <p>Hello, {{ teacher.name }}. The following students have requested recommendations from you as a component of their AP course applications in the 2015-16 school year.</p><p>For each student, please indicate if you "Recommend", "Recommend with reservations", or "Do not recommend", keeping in mind the criteria below. If you select either of the latter two options, you will be prompted to include a rationale.</p>
+  <p><b>There is no need to log in&mdash;just make your recommendations in the table below. Your selections are saved automatically.</b></p>
+  <p><h3>Attributes to consider</h3><ul>
+    <li>Intellectual curiosity</li>
+    <li>Cooperates with teacher and classmates</li>
+    <li>Organizational skills</li>
+    <li>Good listening skills</li>
+    <li>Study habits</li>
+    <li>Thinks critically and analytically</li>
+    <li>Contributions to class discussions</li>
+    <li>Able to synthesize and relate large amounts of information</li>
+    <li>Prompt and thorough in completing assignments</li>
+    <li>Enjoys learning independently</li>
+    <li>Attends school regularly and reports to class on time</li>
+  </ul></p>
+  <hr>
+  <table class="table table-striped table-bordered sortable">
+    <thead>
+      <tr>
+        <th data-defaultsort="asc">Student name</th>
+        <th>Desired courses</th>
+        <th class="reviewer-control-column" data-defaultsort="disabled">Recommendation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for application in applications %}
+      {% set rec = application.relevant_rec %}
+      <tr>
+        <td>{{ application.submitter.name }}</td>
+        <td>{{ application.course_applications|map(attribute='course')|map(attribute='name')|join(', ') }}</td>
+        {% include '_recommendation_table_item.html' %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='lib/bootstrap-sortable.css')}}">
+{% endblock %}
+
+{% block other_scripts %}
+{{super()}}
+<script src="{{url_for('.static', filename='lib/bootstrap-sortable.js')}}"></script>
+{% endblock %}

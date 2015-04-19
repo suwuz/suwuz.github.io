@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>WSHS AP Applications</title>
+    <style>
+      @page {
+        margin: 1in;
+        font-family: sans-serif;
+      }
+      .cover-page {
+        text-align: center;
+        page-break-after: always;
+      }
+
+      .cover-page h1 {
+        padding-top: 250pt;
+      }
+
+      .cover-page h1, .cover-page h2 {
+        line-height: 1;
+        margin: 0;
+        -pdf-outline: false;
+      }
+
+      .application-page {
+        page-break-after: always;
+      }
+
+      html, ul {
+        line-height: 1;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      pre,
+      hr {
+          margin: 0.25em 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cover-page">
+      <h1>WSHS AP Applications</h1>
+      <h2>Generated {{ generation_date }}</h2>
+    </div>
+    {% for application in applications %}
+      <div class="application-page">
+        <h2>{{ application.submitter.name }}</h2>
+        {% set submitter=application.submitter %}
+        {% set course_apps=application.course_applications %}
+        {% set teacher_recs=application.teacher_recs %}
+        {% set test_scores=application.test_scores %}
+        {% set current_ap_courses=application.current_ap_courses %}
+        {% set is_reviewer=True %}
+        {% include '_formatted_application.html' %}
+      </div>
+    {% endfor %}
+  </body>

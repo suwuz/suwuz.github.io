@@ -1,0 +1,11 @@
+<p>Good news, {{ application.submitter.name }}! Your White Station High School Advanced Placement Application for the 2015-16 school year has been submitted successfully.</p>
+
+<p>Here's a copy of the application for your records. You can also <a href="{{ url_for('view_application', application_id=application.id, _external=True) }}">view a digital copy</a>.</p>
+
+<pre style="margin-left: 10px; font-family: monospace;">
+{{ raw_application }}
+</pre>
+
+<p>Thank you! You'll receive a follow-up email if there are any questions or concerns about your application&mdash;otherwise, you're all set.</p>
+
+<p style="color: gray; font-size: 0.9em;">Sent by the WSHS AP Applications Automailer. Replies to this email address are not monitored. Please contact your counsellor if you have any questions.</p>

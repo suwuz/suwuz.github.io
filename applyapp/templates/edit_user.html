@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% set name = "Creating user" if is_new else "Editing user" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "users" -%}
+
+{% from "bootstrap/wtf.html" import form_field, form_errors %}
+
+{% block inner_content %}
+  <form method="POST" class="form" autocomplete="off" role="form">
+
+    {# This is hacky, but it prevents Chrome from autocompleting a password here,
+       which would be undesirable given that this field should only be filled in if
+       the user desires to change their password.
+    #}
+    <div style="display:none;">
+      <input type="password">
+    </div>
+
+    {{ form.hidden_tag() }}
+    {{ form_errors(form, hiddens='only') }}
+
+    {%- for field in form %}
+      {% if not bootstrap_is_hidden_field(field) -%}
+        {{ form_field(field,
+                      form_type=form_type,
+                      horizontal_columns=horizontal_columns,
+                      button_map={"submit":"primary"}) }}
+      {%- endif %}
+    {%- endfor %}
+  </form>
+{% endblock %}

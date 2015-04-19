@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% set active_page = "register" -%}
+{% set name = "Register" -%}
+{% set wrapper_class = "narrow" %}
+
+{% from "bootstrap/wtf.html" import quick_form %}
+
+{% block inner_content %}
+  <p>Welcome to the WSHS AP Application process! To ensure timely processing of your application, ensure all information provided is complete and accurate.</p>
+  <p>First, create an account, which you will use to manage and submit your application.</p>
+  {{ quick_form(register_user_form, action=url_for_security('register'), method="POST", button_map={"submit":"primary"}) }}
+{% endblock %}

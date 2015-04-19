@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% set name = "Add teachers in bulk" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "teachers" -%}
+
+{% block inner_content %}
+  <p>Paste in a comma-separate file (CSV) containing <code>teacher,email</code> data. Existing teachers will NOT be overwritten.</p>
+  {{ wtf.quick_form(form, method="POST", button_map={"submit":"primary"}) }}
+{% endblock %}
+
+{% block other_scripts %}
+{{super()}}
+<script src="{{url_for('.static', filename='lib/jquery.elastic.js')}}"></script>
+{% endblock %}

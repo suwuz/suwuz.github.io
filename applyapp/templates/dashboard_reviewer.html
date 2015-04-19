@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% set name = "Dashboard" -%}
+{% set active_page = "dashboard" -%}
+
+{% block inner_content %}
+  <!--<div class="alert alert-dismissible alert-success">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <b>Now available:</b> <a href="{{ url_for('recommendations') }}">manage recommendation and send recommendation emails to teachers</a>.
+  </div>-->
+  <p>Welcome to the reviewer dashboard for the White Station High School AP Application process.</p>
+  <h2>Stats</h2>
+  <ul class="stats">
+    <li><b>{{ courses }}</b> courses</li>
+    <li><b>{{ users }}</b> users</li>
+    <li><b>{{ applications }}</b> applications ({{ course_app_ct }} course applications)</li>
+    <li><b>{{ recommendations }}</b> recommendations ({{ completed_rec_ct }} completed)</li>
+  </ul>
+{% endblock %}

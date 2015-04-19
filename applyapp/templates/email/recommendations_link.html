@@ -1,0 +1,11 @@
+<p>Greetings, {{ teacher.name }}. {{ recs_count }} student{% if recs_count != 1 %}s have{% else %} has{% endif %} requested a recommendation from you for {% if recs_count != 1 %}their{% else %}his/her{% endif %} White Station High School Advanced Placement application{% if recs_count != 1 %}s{% endif %} for the 2015-16 school year.</p>
+
+<p>Below is a link to a webpage through which you can provide your recommendations. Do not share this link with anyone, as it is unique to you&mdash;anyone with the link can submit recommendations as "{{ teacher.name }}". <b>This process must be completed by the morning of Thursday, April 2, 2015.</b></p>
+
+<p>Additionally, note that the webpage can only be accessed while connected to an SCS wireless network, so <b>you must be at school to complete the recommendations</b>. The website is designed for modern browsers, so use Chrome or Firefox for best results.</p>
+
+<p style="text-align: center; font-size: 1.25em;"><a href="{{ url_for('make_recommendations', hashed=teacher.hash, _external=True) }}">Make recommendations</a></p>
+
+<p>Thank you!</p>
+
+<p style="color: gray; font-size: 0.9em;">Sent by the WSHS AP Applications Automailer. Replies to this email address are not monitored. Please contact an administrator if you have any questions.</p>

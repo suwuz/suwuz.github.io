@@ -1,0 +1,61 @@
+<div class="application-formatted">
+
+  <h3>At a glance</h3>
+  <div class="name">{{ submitter.name }}</div>
+  <div class="more">Entering {{ submitter.entering_grade}}th grade</div>
+  <div class="more">Applying for {{ course_apps|length }} AP course{% if course_apps|length != 1 %}s{% endif %}</div>
+
+  <h3>General information</h3>
+  <p><strong>{{ submitter.name|default('No name', true) }}</strong><br>{{ submitter.email }}<br>{{ submitter.phone_number|default('No phone number', true) }}</p>
+  <p><em>Parent</em><br>{{ submitter.parent_name|default('No parent name', true) }}<br>{{ submitter.parent_email|default('No parent email', true) }}<br>{{ submitter.parent_phone_number|default('No parent phone number', true) }}</p>
+  <p><em>Supplementary info</em><br>Test scores: {{ test_scores|default('None', true) }}<br>Current AP courses: {{ current_ap_courses|default('None', true) }}</p>
+
+  <h3>Courses</h3>
+    {% if course_apps|length == 0 %}
+      <p>No desired courses</p>
+    {% endif %}
+    {% for course_app in course_apps %}
+      <h4>{{ course_app.course.name }}</h4>
+      {% if is_review %}
+        {% set status=course_app.status %}
+        {% include '_review_app_item.html' %}
+      {% endif %}
+      <ul class="hide-bullets">
+        <li>{% if course_app.have_met_reqs %}<span class="glyphicon glyphicon-ok-circle">Yes &ndash;</span>{% else %}<span class="glyphicon glyphicon-remove-circle">No &ndash;</span>{% endif %} Have met requirements</li>
+        <li>{% if course_app.average_okay %}<span class="glyphicon glyphicon-ok-circle">Yes &ndash;</span>{% else %}<span class="glyphicon glyphicon-remove-circle">No &ndash;</span>{% endif %} B or higher average</li>
+        {% if course_app.course.upload_required %}
+        <li>{% if course_app.uploaded_content %}<span class="glyphicon glyphicon-ok-circle">Yes &ndash;</span>{% else %}<span class="glyphicon glyphicon-remove-circle">No &ndash;</span>{% endif %} Uploaded files</li>
+          <ul class="writing-samples">
+            <li>{% if course_app.writing_sample_status == 'yes' %}<span class="glyphicon glyphicon-thumbs-up"></span> Review status: yes {% elif course_app.writing_sample_status == 'no' %}<span class="glyphicon glyphicon-thumbs-down"></span> Review status: no{% elif course_app.writing_sample_status == 'maybe' %}<span class="glyphicon glyphicon-thumbs-up withreservations"></span> Review status: maybe{% elif course_app.writing_sample_status == 'pending' %}<span class="glyphicon glyphicon-unchecked"></span> Review status: not yet reviewed{% endif %}</li>
+          {% for f in course_app.uploaded_content %}
+            <li><a href="{{ url_for('download_file', file=f._id) }}">{{ f.name }}</a></li>
+          {% endfor %}
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+    {% endfor %}
+
+  <h3>Teacher recommendations</h3>
+  {% if teacher_recs|length == 0 %}
+    <p>No teacher recommendations</p>
+  {% endif %}
+  {% if submitter.is_first_year_at_wshs %}
+    <ul><li>First-year White Station student. Teacher recommendations will be submitted separately.</li></ul>
+  {% else %}
+    {% if is_reviewer %}
+      <ul class="hide-bullets">
+      {% for rec in teacher_recs %}
+          <li>{% if rec.status == 'recommend' %}<span class="glyphicon glyphicon-thumbs-up"></span> {{ rec.teacher.name }} &ndash; recommended! {% elif rec.status == 'donotrecommend' %}<span class="glyphicon glyphicon-thumbs-down"></span> {{ rec.teacher.name }} &ndash; do not recommend: {{ rec.rationale }}{% elif rec.status == 'withreservations' %}<span class="glyphicon glyphicon-thumbs-up withreservations"></span> {{ rec.teacher.name }} &ndash; with reservations: {{ rec.rationale }}{% elif rec.status == 'pending' %}<span class="glyphicon glyphicon-unchecked"></span> {{ rec.teacher.name }} &ndash; pending{% endif %}</li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <ul>
+      {% for rec in teacher_recs %}
+        <li>{{ rec.teacher.name }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endif %}
+</div>
+

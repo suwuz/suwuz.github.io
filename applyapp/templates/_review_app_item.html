@@ -1,0 +1,7 @@
+<span class="rec-links">
+    {% if status == 'pending' %}
+      <a class="btn btn-success" href="{{ url_for('submit_application_review', application_id=application.id, course_id=course_app.course.id, status='approved') }}">Approve</a>&nbsp;<a class="btn btn-danger" href="{{ url_for('submit_application_review', application_id=application.id, course_id=course_app.course.id, status='rejected') }}">Reject</a>
+    {% else %}
+      {% if status == 'approved' %}<span class="glyphicon glyphicon-thumbs-up"></span> Approved {% elif status == 'rejected' %}<span class="glyphicon glyphicon-thumbs-down"></span> Rejected{% endif %} (<a href="{{ url_for('submit_application_review', application_id=application.id, course_id=course_app.course.id, status='pending') }}">edit</a>)
+    {% endif %}
+</span>

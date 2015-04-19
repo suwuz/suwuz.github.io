@@ -1,0 +1,103 @@
+{#
+  layout.html
+#}
+
+{% extends "bootstrap/base.html" %}
+{% block title %}{% if name %}{{ name }} - {% endif %}WSHS AP Applications{% endblock %}
+
+{% set navigation_bar = [
+ (current_user.has_role('student') or current_user.has_role('reviewer'), '/dashboard', 'dashboard', 'Dashboard'),
+ (current_user.has_role('reviewer'), '/courses', 'courses', 'Courses'),
+ (current_user.has_role('reviewer'), '/applications', 'applications', 'Applications'),
+ (current_user.has_role('reviewer'), '/recommendations', 'recommendations', 'Recommendations'),
+ (current_user.has_role('reviewer'), '/teachers', 'teachers', 'Teachers'),
+ (current_user.has_role('reviewer'), '/users', 'users', 'Users')
+] -%}
+
+{% set active_page = active_page|default('') -%}
+{% set wrapper_class = wrapper_class|default(active_page) %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/transition.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/collapse.min.js"></script>
+<script src="{{ url_for('static', filename='lib/jquery.areYouSure.js') }}"></script>
+{% block other_scripts %}{% endblock %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}
+
+{% block navbar %}
+<div class="container hidden-print">
+<div class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('home') }}">WSHS AP Applications</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        {% for should_show, href, id, caption in navigation_bar %}
+          {% if should_show %}
+          <li{% if id == active_page %} class="active"{% endif
+          %}><a href="{{ href|e }}">{{ caption|e }}</a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right {% if current_user.is_authenticated() %}navbar-logged-in-area{% endif %}">
+        {% if current_user.is_authenticated() %}
+          <li><a href="{{ url_for('account') }}">{{ current_user.email }}</a></li>
+        {% endif %}
+        <li{% if active_page == 'login' %} class="active"{% endif %}>
+          {% if current_user.is_authenticated() %}
+            <a href="{{ url_for_security('logout') }}">(log out)</a>
+          {% else%}
+            <a href="{{ url_for_security('login') }}">Login</a>
+          {% endif %}
+        </li>
+        <!--{% if not current_user.is_authenticated() %}
+        <li{% if active_page == 'register' %} class="active"{% endif %}>
+            <a href="{{ url_for_security('register') }}">Register</a>
+        </li>
+        {% endif %}-->
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container-fluid -->
+</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-dismissible alert-{%if category == 'error' %}danger{% else %}{{ category }}{% endif %}" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          {{ message|safe }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <div class="content-{{ wrapper_class }}">
+    <h1>{{ name }}</h1>
+    {% block inner_content %}{% endblock %}
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    <p class="text-muted">&copy; {{ current_year }} White Station High School. Website by <a href="https://theopatt.com">Theo Patt</a>.</p>
+  </div>
+</div>
+{% endblock %}

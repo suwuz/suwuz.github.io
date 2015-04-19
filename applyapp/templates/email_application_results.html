@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% set name = "Email application results" -%}
+{% set active_page = "applications" -%}
+
+{% block inner_content %}
+  <p>Use the page to preview the students who will receive a review notification email. You can send (or resend) individual emails using the link in each row. (Hovever a thumbs up/down to see the course name; click to be taken directly to the review interface.) <b>Note: Upon clicking the button below, it may take several minutes for the next page to load. This is normal, as each email is being queued &amp; sent.</b></p>
+  <p><form method="post"><input type="submit" class="btn btn-warning" value="Send an email to each student with their application results"></form></p><hr>
+  <h2>Individualized information</h2>
+  <table class="table table-striped table-bordered sortable">
+    <thead>
+      <tr>
+        <th data-defaultsort="asc">Student</th>
+        <th>Approved / Rejected / Pending</th>
+        <th>Review app</th>
+        <th>Send email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for application in applications %}
+      <tr>
+        <td>{{ application.submitter.name }}</td>
+        <td>
+          {{ application.approved_ct }} / {{ application.rejected_ct }} / {{ application.pending_ct }}
+        </td>
+        <td><a href="{{ url_for('review_application', application_id=application.id) }}">Review application</a></td>
+        <td><form method="post"><input type="hidden" name="id" value="{{ application.id }}"><input type="submit" class="btn btn-link" value="Send email"></form></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='lib/bootstrap-sortable.css')}}">
+{% endblock %}
+
+{% block other_scripts %}
+{{super()}}
+<script src="{{url_for('.static', filename='lib/bootstrap-sortable.js')}}"></script>
+{% endblock %}

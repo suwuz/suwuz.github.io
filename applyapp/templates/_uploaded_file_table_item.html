@@ -1,0 +1,5 @@
+{% if status == 'pending' %}
+  <td class="rec-links"><a class="btn btn-success" href="{{ url_for('submit_review', application_id=application.id, course_id=course_app.course.id,status='yes') }}">Yes</a>&nbsp;<a class="btn btn-warning" href="{{ url_for('submit_review', application_id=application.id, course_id=course_app.course.id, status='maybe') }}">Maybe</a>&nbsp;<a class="btn btn-danger" href="{{ url_for('submit_review', application_id=application.id, course_id=course_app.course.id, status='no') }}">No</a></td>
+{% else %}
+  <td class="rec-links">{% if status == 'yes' %}<span class="glyphicon glyphicon-thumbs-up"></span> Yes {% elif status == 'no' %}<span class="glyphicon glyphicon-thumbs-down"></span> No{% elif status == 'maybe' %}<span class="glyphicon glyphicon-thumbs-up withreservations"></span> Maybe{% endif %}  (<a href="{{ url_for('submit_review', application_id=application.id, course_id=course_app.course.id, status='pending') }}">edit</a>)</td>
+{% endif %}

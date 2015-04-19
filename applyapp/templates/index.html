@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% set name = "Welcome" -%}
+{% set wrapper_class = "narrow" %}
+
+{% block inner_content %}
+  <p>Students enrolled in the optional program at White Station High School have the opportunity to earn college credits through the Advanced Placement (AP) Program. <b>All applications are due by {{ due_date }}.</b> Begin the application process using a link below.</p>
+  {% if config.APPS_ARE_CLOSED %}
+    <p class="apps-ended">The application period has ended.</p>
+  {% else %}
+    <p class="home-buttons"><a href="{{ url_for('new_application') }}" class="btn btn-success btn-lg">Start new application</a> <a href="{{ url_for_security('login') }}" class="btn btn-default btn-lg">Continue a previous application</a></p>
+  {% endif %}
+{% endblock %}

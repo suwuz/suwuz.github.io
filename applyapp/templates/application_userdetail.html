@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% set name = "Step 2: More details" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block inner_content %}
+  {{ wtf.quick_form(form, method="POST", button_map={"submit":"primary", "prev": "primary"}) }}
+{% endblock %}

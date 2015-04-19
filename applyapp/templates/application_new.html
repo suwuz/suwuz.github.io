@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% set name = "Step 1: You" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block inner_content %}
+  {% if not current_user.has_role('reviewer') and config.APPS_ARE_CLOSED %}
+    <p class="apps-ended">The application period has ended.</p>
+  {% else %}
+    <p>Start the application process here. Have to run for a bit? No worries, you can pause and resume at any time. Just be sure to hit the "Save" button before you go. {% if is_existing %}Looking to change your account email address or password? You can do this at the <a href="{{ url_for('account') }}">Account Management</a> page.{% endif %}</p>
+    <hr>
+    {{ wtf.quick_form(form, method="POST", button_map={"submit":"primary", "prev": "primary"}) }}
+  {% endif %}
+{% endblock %}
